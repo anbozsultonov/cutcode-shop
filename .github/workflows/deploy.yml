@@ -1,0 +1,29 @@
+name: deploy
+
+on:
+  push :
+    branches:
+      - master
+      - develop
+  pull_request :
+    branches:
+      - master
+      - develop
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup redis
+        uses: shogo82148/actions-setup-redis@v1
+        with:
+          redis-version: '5.0'
+      - name: Copy .env
+        run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+      - name: Install Dependencies (PHP vendors)
+        run: composer install --ignore-platform-reqs
+      - name: Generate key
+        run: php artisan key:generate
+      - name: Execute tests (Unit and Feature tests) via PHPUnit
+        run: vendor/bin/phpunit

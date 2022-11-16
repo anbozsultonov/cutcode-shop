@@ -12,39 +12,30 @@ use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Register any application services.
-     *
-     * @return void
-     */
     public function register()
     {
         //
     }
 
-    /**
-     * Bootstrap any application services.
-     *
-     * @return void
-     */
+
     public function boot()
     {
-        Model::preventLazyLoading(!app()->isProduction());
-        Model::preventSilentlyDiscardingAttributes(!app()->isProduction());
+        Model::shouldBeStrict(isLocal());
 
-        DB::whenQueryingForLongerThan(100, function (Connection $connection): void {
-            Log::channel('telegram')
-                ->debug("whenQueryingForLongerThan || query = "
-                    . $connection->query()->toSql()
-                    . "|| route = "
-                    . request()?->url()
+        DB::listen(function ($query) {
+            if ($query->time > 100) {
+                tgLog(
+                    "url = " . request()?->url()
+                    . 'query = ' . $query->sql
+                    . 'bindings = ' . implode(', ', $query->bindings)
                 );
+            }
         });
 
         $kernel = app(Kernel::class);
 
         $kernel->whenRequestLifecycleIsLongerThan(
-            CarbonInterval::seconds(4),
+            CarbonInterval::seconds(100),
             function (): void {
                 Log::channel('telegram')
                     ->debug("whenRequestLifecycleIsLongerThan "
