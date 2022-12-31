@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\Models\HasSlug;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -9,15 +10,15 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
  * @property int $id
- * @property string $slug
  * @property string $title
  * @property string|null $thumbnail
- * */
+ **/
 
 
-class Category extends Model
+class Category extends Model implements ModelHasSlug
 {
     use HasFactory;
+    use HasSlug;
 
     protected $table = 'categories';
 
@@ -26,20 +27,8 @@ class Category extends Model
         'title',
     ];
 
-    protected static function boot(): void
-    {
-        parent::boot();
-
-        static::creating(function (Category $category): void {
-            if (!$category->slug) {
-                $category->slug = str($category->title)->slug();
-            }
-        });
-    }
-
     public function products(): BelongsToMany
     {
         return $this->belongsToMany(Product::class);
     }
-
 }
