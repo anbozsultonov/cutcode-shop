@@ -5,9 +5,12 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Password;
 use JetBrains\PhpStorm\ArrayShape;
+use Worksome\RequestFactories\Concerns\HasFactory;
 
 class SignUpFromRequest extends FormRequest
 {
+    use HasFactory;
+
     public function authorize(): bool
     {
         return auth()->guest();

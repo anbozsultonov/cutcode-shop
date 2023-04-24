@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ForgotPasswordFromRequest;
 use App\Http\Requests\ResetPasswordFormRequest;
 use App\Http\Requests\SignInFromRequest;
+use App\Http\Requests\SignUpFromRequest;
 use App\Models\User;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Auth\Events\Registered;
@@ -12,6 +13,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Password;
 use Illuminate\View\View;
+use Laravel\Socialite\Facades\Socialite;
 
 class AuthController extends Controller
 {
@@ -40,9 +42,10 @@ class AuthController extends Controller
         $credentials = $request->validated();
 
         if (!Auth::attempt($credentials)) {
-            return back()->withErrors([
-                'email' => 'User not found',
-            ])->onlyInput('email');
+            return back()
+                ->withErrors([
+                    'email' => 'User not found',
+                ])->onlyInput('email');
         }
 
         $request->session()
@@ -52,7 +55,7 @@ class AuthController extends Controller
             ->intended(route('home'));
     }
 
-    public function store(SignInFromRequest $request): RedirectResponse
+    public function store(SignUpFromRequest $request): RedirectResponse
     {
         $user = User::query()
             ->create([
@@ -92,9 +95,14 @@ class AuthController extends Controller
             $request->only('email')
         );
 
-        return $status === Password::RESET_LINK_SENT
-            ? back()->with(['message' => __($status)])
-            : back()->withErrors(['email' => __($status)]);
+        if ($status === Password::RESET_LINK_SENT) {
+            flash()->info(__($status));
+
+            return back();
+        }
+
+        return back()
+            ->withErrors(['email' => __($status)]);
     }
 
     public function reset(ResetPasswordFormRequest $request): RedirectResponse
@@ -111,10 +119,41 @@ class AuthController extends Controller
                 event(new PasswordReset($user));
             }
         );
+        if ($status === Password::PASSWORD_RESET) {
+            flash()->alert(__($status));
 
-        return $status === Password::PASSWORD_RESET
-            ? redirect()->route('login')
-                ->with('message', __($status))
-            : back()->withErrors(['email' => [__($status)]]);
+            return redirect()->route('login');
+        }
+
+        return back()
+            ->withErrors(['email' => [__($status)]]);
     }
+
+    public function github(): RedirectResponse
+    {
+        return Socialite::driver('github')->redirect();
+    }
+
+    public function githubCallback(): RedirectResponse
+    {
+        $githubUser = Socialite::driver('github')->user();
+
+        //TODO
+        $user = User::query()
+            ->updateOrCreate([
+                'github_id' => $githubUser->id,
+            ], [
+                'name' => $githubUser->nickname,
+                'email' => $githubUser->email,
+                'password' => bcrypt(str()->random(8))
+            ]);
+
+        auth()->login($user);
+
+        return redirect()
+            ->intended(route('home'));
+
+    }
+
+
 }

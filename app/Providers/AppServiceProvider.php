@@ -23,7 +23,7 @@ class AppServiceProvider extends ServiceProvider
         Model::shouldBeStrict(isLocal());
 
         DB::listen(function ($query) {
-            if ($query->time > 100) {
+            if ($query->time > 1000) {
                 tgLog(
                     "url = " . request()?->url()
                     . 'query = ' . $query->sql
