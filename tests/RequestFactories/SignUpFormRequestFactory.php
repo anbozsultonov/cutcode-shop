@@ -4,7 +4,7 @@ namespace Tests\RequestFactories;
 
 use Worksome\RequestFactories\RequestFactory;
 
-class SignUpFromRequestFactory extends RequestFactory
+class SignUpFormRequestFactory extends RequestFactory
 {
     public function definition(): array
     {

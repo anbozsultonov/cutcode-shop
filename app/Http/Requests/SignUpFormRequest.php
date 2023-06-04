@@ -7,7 +7,7 @@ use Illuminate\Validation\Rules\Password;
 use JetBrains\PhpStorm\ArrayShape;
 use Worksome\RequestFactories\Concerns\HasFactory;
 
-class SignUpFromRequest extends FormRequest
+class SignUpFormRequest extends FormRequest
 {
     use HasFactory;
 
@@ -31,7 +31,8 @@ class SignUpFromRequest extends FormRequest
             ],
             'name' => [
                 'required',
-                'string', 'min:1'],
+                'string', 'min:1'
+            ],
             'password' => [
                 'required',
                 'confirmed',
