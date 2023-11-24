@@ -5,22 +5,11 @@ on:
     branches:
       - master
 jobs:
-  notification:
+  notify:
     runs-on: ubuntu-latest
-
     steps:
-      # Send a telegram message on pr open or review request
-      - name: Pull Request Telegram
-        uses: F2had/pr-telegram-action@v1.0.0
-        with:
-          bot_token: 5719761998:AAFcnNOlg0P5lU0FvVBd-qVgO-NgzcqXKsk
-          chat_id: -614814904
-#jobs:
-#  notify:
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: send sms to telegram
-#        id: vars
-#        run: |
-#          curl -XPOST "https://api.telegram.org/bot5719761998:AAFcnNOlg0P5lU0FvVBd-qVgO-NgzcqXKsk/sendMessage?chat_id=-614814904&text=${{vars[steps.vars.outputs.NICK_TG] }}-MUST_REVIEW_Pull_Request:${{github.event.pull_request.html_url }}"
-##          curl -XPOST "https://api.telegram.org/bot5719761998:AAFcnNOlg0P5lU0FvVBd-qVgO-NgzcqXKsk/sendMessage?chat_id=&text=RELEASED:${{github.event.pull_request.html_url }}user:${{github.event.pull_request.user.login }}"
+      - name: send sms to telegram
+        id: vars
+        run: |
+          curl -XPOST "https://api.telegram.org/bot5719761998:AAFcnNOlg0P5lU0FvVBd-qVgO-NgzcqXKsk/sendMessage?chat_id=-614814904&text=${{ github.event_name }} commit in ${{ github.repository }} by "${{ github.actor }}". [${{github.sha}}@${{ github.ref }}]
+#          curl -XPOST "https://api.telegram.org/bot5719761998:AAFcnNOlg0P5lU0FvVBd-qVgO-NgzcqXKsk/sendMessage?chat_id=&text=RELEASED:${{github.event.pull_request.html_url }}user:${{github.event.pull_request.user.login }}"
