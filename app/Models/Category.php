@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Traits\Models\HasSlug;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -9,37 +11,38 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
  * @property int $id
- * @property string $slug
  * @property string $title
  * @property string|null $thumbnail
- * */
+ * @property bool $on_home_page
+ * @property int $sorting
+ * @method Builder homePage()
+ * @method static Builder|Category query()
+ **/
 
 
-class Category extends Model
+class Category extends Model implements ModelHasSlug
 {
     use HasFactory;
+    use HasSlug;
 
     protected $table = 'categories';
 
     protected $fillable = [
         'slug',
         'title',
+        'on_home_page',
+        'sorting',
     ];
 
-    protected static function boot(): void
+    public function scopeHomePage(Builder $builder)
     {
-        parent::boot();
-
-        static::creating(function (Category $category): void {
-            if (!$category->slug) {
-                $category->slug = str($category->title)->slug();
-            }
-        });
+        $builder->where('on_home_page', '=', true)
+            ->orderBy('sorting')
+            ->limit(6);
     }
 
     public function products(): BelongsToMany
     {
         return $this->belongsToMany(Product::class);
     }
-
 }

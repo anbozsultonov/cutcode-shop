@@ -1,5 +1,7 @@
 <?php
 
+use Support\Flash\Flash;
+
 function isProduction(): bool
 {
     return app()->isProduction();
@@ -21,3 +23,10 @@ function tgLog(string $text, ?string $level = 'debug'): void
         $channel->debug($text);
     }
 }
+
+function flash(): Flash
+{
+    return app(Flash::class);
+}
+
+
