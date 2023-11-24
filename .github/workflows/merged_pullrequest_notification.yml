@@ -10,4 +10,5 @@ jobs:
     steps:
       - name: send sms to telegram
         run: |
-          curl -XPOST "https://api.telegram.org/bot5719761998:AAFcnNOlg0P5lU0FvVBd-qVgO-NgzcqXKsk/sendMessage?chat_id=-614814904&text=RELEASED:${{github.event.pull_request.html_url }}user:${{github.event.pull_request.user.login }}"
+          curl -XPOST "https://api.telegram.org/bot5719761998:AAFcnNOlg0P5lU0FvVBd-qVgO-NgzcqXKsk/sendMessage?chat_id=-614814904&text=${{vars[steps.vars.outputs.NICK_TG] }}-MUST_REVIEW_Pull_Request:${{github.event.pull_request.html_url }}"
+#          curl -XPOST "https://api.telegram.org/bot5719761998:AAFcnNOlg0P5lU0FvVBd-qVgO-NgzcqXKsk/sendMessage?chat_id=&text=RELEASED:${{github.event.pull_request.html_url }}user:${{github.event.pull_request.user.login }}"
