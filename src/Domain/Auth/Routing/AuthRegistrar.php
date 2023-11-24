@@ -8,7 +8,6 @@ use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\SignInController;
 use App\Http\Controllers\Auth\SignUpController;
 use App\Http\Controllers\Auth\SocialAuthController;
-use App\Http\Controllers\AuthController;
 use Illuminate\Contracts\Routing\Registrar;
 use Illuminate\Support\Facades\Route;
 
@@ -21,6 +20,7 @@ final class AuthRegistrar implements RouteRegistrar
                 Route::middleware('guest')->group(function () {
                     Route::get('/login', 'page')
                         ->name('login');
+
                     Route::post('/sign-in', 'handle')
                         ->middleware('throttle:auth')
                         ->name('signIn');

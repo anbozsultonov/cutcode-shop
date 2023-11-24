@@ -1,0 +1,18 @@
+name: Notify merged pull request
+
+on:
+  push:
+    branches:
+      - master
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create variables
+        id: vars
+        run: |
+          nick=${{github.event.requested_reviewer.login}}
+          echo "::set-output name=NICK_TG::${nick^^}"
+          - name: send sms to telegram
+            run: |
+              curl -XPOST "https://api.telegram.org/bot5719761998:AAFcnNOlg0P5lU0FvVBd-qVgO-NgzcqXKsk/sendMessage?chat_id=-614814904  &text=RELEASED: ${{github.event.pull_request.html_url}} \n user: ${{github.event.pull_request.user.login}}"

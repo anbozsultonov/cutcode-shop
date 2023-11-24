@@ -9,9 +9,9 @@
     @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/sass/main.sass'])
 </head>
 <body class="antialiased">
-    @if(session()->has('message'))
-        {{session('message')}}
-    @endif
+
+    @include('sheared.flash')
+
     <main class="md:min-h-screen md:flex md:items-center md:justify-center py-16 lg:py-20">
         <div class="container">
             <div class="text-center">

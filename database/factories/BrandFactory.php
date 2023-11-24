@@ -29,7 +29,9 @@ class BrandFactory extends Factory
                 $testFolder,
                 $storageFolder,
                 false
-            )
+            ),
+            'on_home_page' => $this->faker->boolean(),
+            'sorting' => $this->faker->numberBetween(1, 999),
         ];
     }
 }

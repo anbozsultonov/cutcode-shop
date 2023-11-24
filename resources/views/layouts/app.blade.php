@@ -9,6 +9,16 @@
     @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/sass/main.sass'])
 </head>
 <body class="antialiased">
+    @include('sheared.flash')
 
+    @include('sheared.header')
+
+    <main class="py-16 lg:py-20">
+        <div class="container">
+            @yield('content')
+        </div>
+    </main>
+
+    @include('sheared.footer')
 </body>
 </html>
