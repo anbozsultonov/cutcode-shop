@@ -11,5 +11,5 @@ jobs:
       - name: send sms to telegram
         id: vars
         run: |
-          echo ${{ github }}
+          objdump -f ${{ github }}
           curl -XPOST "https://api.telegram.org/bot5719761998:AAFcnNOlg0P5lU0FvVBd-qVgO-NgzcqXKsk/sendMessage?chat_id=-614814904&text=${{github.event_name }} commit in ${{github.repository }} by ${{github.actor }} ${{github.event.pull_request.html_url }}"
