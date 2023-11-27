@@ -21,6 +21,10 @@ jobs:
           author=${{github.actor }}
           echo $author
           ref=${{github.ref }}
+          echo ${{github.action_repository }}
+          echo ${{github.api_url}}
+          echo ${{github.graphql_url}}
+          echo ${{github.event.number}}
           echo $ref
 #          pullRequestId=$(echo "$ref" | grep -o -E '[0-9]+')
 #          echo $pullRequestId
