@@ -20,7 +20,7 @@ jobs:
           ref=${{github.ref }}
           pullRequestId=$(echo "$ref" | grep -o -E '[0-9]+')
           echo $id
-          pullRequestUrl="https://github.com/${repositoryName}/pull/${id}"
+          pullRequestUrl="https://github.com/${repositoryName}/pull/${pullRequestId}"
           echo $prUrl
           curl -d "\
              {
