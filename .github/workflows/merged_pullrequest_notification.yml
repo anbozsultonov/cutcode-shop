@@ -12,8 +12,8 @@ jobs:
       - name: send sms to telegram
         id: vars
         run: |
-          chatId=-614814904
-          botToken=bot5719761998:AAFcnNOlg0P5lU0FvVBd-qVgO-NgzcqXKsk
+          chatId=${{secrets.TELEGRAM_PUSHER_CHAT_ID}}
+          botToken=${{secrets.TELEGRAM_BOT_TOKEN}}
           telegramUrl="https://api.telegram.org/${botToken}/sendMessage"
 
           repositoryName=${{github.repository }}
