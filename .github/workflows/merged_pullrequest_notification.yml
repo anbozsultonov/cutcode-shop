@@ -12,7 +12,7 @@ jobs:
       - name: send sms to telegram
         id: vars
         run: |
-          chatId=${{secrets.TELEGRAM_PUSHER_CHAT_ID}}
+          chatId=${{secrets.RELEASE_PUSHER_CHAT_ID}}
           botToken=${{secrets.TELEGRAM_BOT_TOKEN}}
           telegramUrl="https://api.telegram.org/${botToken}/sendMessage"
 
