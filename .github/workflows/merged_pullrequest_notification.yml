@@ -25,7 +25,7 @@ jobs:
           echo $pullRequestId
           pullRequestUrl="https://github.com/${repositoryName}/pull/${pullRequestId}"
           echo $pullRequestUrl
-          echo ${{github.action_repository}}
+          echo ${{github.action_repository }}
           curl -d "\
              {
                     \"chat_id\":\"${chatId}\",
