@@ -19,20 +19,13 @@ jobs:
           repositoryName=${{github.repository }}
 
           author=${{github.actor }}
-          echo $author
+
           ref=${{github.ref }}
-          echo ${{github.action_repository }}
-          echo ${{github.api_url }}
-
-          echo ${{github.github.event.pull_request.owner.email }}
-
 
           pullRequestId=${{github.event.number }}
-          echo $pullRequestId
-          echo ${{github.event.pull_request.html_url }}
-          pullRequestUrl="https://github.com/${repositoryName}/pull/${pullRequestId}"
-          echo $pullRequestUrl
-          echo ${{github.action_repository }}
+
+          pullRequestUrl=${{github.event.pull_request.html_url }}
+
           curl -d "\
              {
                     \"chat_id\":\"${chatId}\",
