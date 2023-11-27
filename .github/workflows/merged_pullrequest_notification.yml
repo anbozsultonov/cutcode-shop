@@ -23,7 +23,8 @@ jobs:
           ref=${{github.ref }}
           echo ${{github.action_repository }}
           echo ${{github.api_url }}
-          echo ${{github.graphql_url }}
+          echo ${{github.github.event.pull_request.owner.login }}
+
 
           pullRequestId=${{github.event.number }}
           echo $pullRequestId
