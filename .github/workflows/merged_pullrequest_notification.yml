@@ -22,11 +22,12 @@ jobs:
           echo $author
           ref=${{github.ref }}
           echo ${{github.action_repository }}
-          echo ${{github.api_url}}
-          echo ${{github.graphql_url}}
+          echo ${{github.api_url }}
+          echo ${{github.graphql_url }}
 
-          pullRequestId=${{github.event.number}}
+          pullRequestId=${{github.event.number }}
           echo $pullRequestId
+          echo ${{github.event.pull_request.html_url }}
           pullRequestUrl="https://github.com/${repositoryName}/pull/${pullRequestId}"
           echo $pullRequestUrl
           echo ${{github.action_repository }}
