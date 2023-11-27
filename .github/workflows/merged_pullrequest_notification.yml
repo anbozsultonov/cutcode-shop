@@ -3,7 +3,7 @@ name: Notify merged pull request
 on:
   pull_request:
     types:
-      [closed]
+      [ closed ]
 jobs:
   notify:
     if: github.event.pull_request.merged == true
