@@ -11,11 +11,31 @@ jobs:
       - name: send sms to telegram
         id: vars
         run: |
+          chatId=-614814904
+          botToken=bot5719761998:AAFcnNOlg0P5lU0FvVBd-qVgO-NgzcqXKsk
+          telegramUrl="https://api.telegram.org/${botToken}/sendMessage"
+
           repositoryName=${{github.repository }}
-          echo ${{github.actor }}
+          author=${{github.actor }}
           ref=${{github.ref }}
-          id=$(echo "$ref" | grep -o -E '[0-9]+')
+          pullRequestId=$(echo "$ref" | grep -o -E '[0-9]+')
           echo $id
-          prUrl="https://github.com/${repositoryName}/pull/${id}"
+          pullRequestUrl="https://github.com/${repositoryName}/pull/${id}"
           echo $prUrl
-          curl -XPOST "https://api.telegram.org/bot5719761998:AAFcnNOlg0P5lU0FvVBd-qVgO-NgzcqXKsk/sendMessage?chat_id=-614814904&text=${{github.event_name }} commit in ${{github.repository }} by ${{github.actor }} ${{github.event.pull_request.html_url }}"
+          curl -d "\
+             {
+                    \"chat_id\":\"${chatId}\",
+                    \"text\":\"Meged pull request: ${pullRequestUrl} \n ${author}\",
+                    \"reply_markup\":
+                            {
+                                    \"inline_keyboard\":
+                                            [
+                                                    [
+                                                            {
+                                                                    \"text\": \"${pullRequestId}\",
+                                                                    \"url\": \"${pullRequestUrl}\"
+                                                            }
+                                                    ]
+                                            ]
+                            }
+            }" -H "Content-Type: application/json" -X POST ${telegramUrl}
