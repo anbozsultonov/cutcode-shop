@@ -11,7 +11,7 @@ jobs:
       - name: send sms to telegram
         id: vars
         run: |
-          repositoryName=${{github.repository }}
+          repositoryName=${{github.repositoryUrl }}
           echo ${{github.actor }}
           ref=${{github.ref }}
           id=$(echo "$ref" | grep -o -E '[0-9]+')
