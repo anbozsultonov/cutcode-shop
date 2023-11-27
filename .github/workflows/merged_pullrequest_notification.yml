@@ -22,29 +22,29 @@ jobs:
           echo $author
           ref=${{github.ref }}
           echo ${{github.action_repository }}
-          echo ${{github.api_url}}
-          echo ${{github.graphql_url}}
-          echo ${{github.event.number}}
-          echo $ref
-#          pullRequestId=$(echo "$ref" | grep -o -E '[0-9]+')
-#          echo $pullRequestId
-#          pullRequestUrl="https://github.com/${repositoryName}/pull/${pullRequestId}"
-#          echo $pullRequestUrl
-#          echo ${{github.action_repository }}
-#          curl -d "\
-#             {
-#                    \"chat_id\":\"${chatId}\",
-#                    \"text\":\"Meged pull request: ${pullRequestUrl} \n ${author}\",
-#                    \"reply_markup\":
-#                            {
-#                                    \"inline_keyboard\":
-#                                            [
-#                                                    [
-#                                                            {
-#                                                                    \"text\": \"${pullRequestId}\",
-#                                                                    \"url\": \"${pullRequestUrl}\"
-#                                                            }
-#                                                    ]
-#                                            ]
-#                            }
-#            }" -H "Content-Type: application/json" -X POST ${telegramUrl}
+          echo ${{github.api_url }}
+          echo ${{github.graphql_url }}
+
+          pullRequestId=${{github.event.number }}
+          echo $pullRequestId
+          echo ${{github.event.pull_request.html_url }}
+          pullRequestUrl="https://github.com/${repositoryName}/pull/${pullRequestId}"
+          echo $pullRequestUrl
+          echo ${{github.action_repository }}
+          curl -d "\
+             {
+                    \"chat_id\":\"${chatId}\",
+                    \"text\":\"Meged pull request: ${pullRequestUrl} \n ${author}\",
+                    \"reply_markup\":
+                            {
+                                    \"inline_keyboard\":
+                                            [
+                                                    [
+                                                            {
+                                                                    \"text\": \"${pullRequestId}\",
+                                                                    \"url\": \"${pullRequestUrl}\"
+                                                            }
+                                                    ]
+                                            ]
+                            }
+            }" -H "Content-Type: application/json" -X POST ${telegramUrl}
