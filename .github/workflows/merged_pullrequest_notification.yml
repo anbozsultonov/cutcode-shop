@@ -14,7 +14,7 @@ jobs:
         run: |
           chatId=${{secrets.RELEASE_PUSHER_CHAT_ID}}
           botToken=${{secrets.TELEGRAM_BOT_TOKEN}}
-          telegramUrl="https://api.telegram.org/${botToken}/sendMessage"
+          telegramUrl="https://api.telegram.org/bot${botToken}/sendMessage"
           echo $chatId
           echo $botToken
           repositoryName=${{github.repository }}
