@@ -1,4 +1,4 @@
-name: Notify merged pull request
+name: Notify releases
 
 on:
   pull_request:
@@ -12,10 +12,11 @@ jobs:
       - name: send sms to telegram
         id: vars
         run: |
-          chatId=-614814904
-          botToken=bot5719761998:AAFcnNOlg0P5lU0FvVBd-qVgO-NgzcqXKsk
-          telegramUrl="https://api.telegram.org/${botToken}/sendMessage"
-
+          chatId=${{secrets.RELEASE_PUSHER_CHAT_ID}}
+          botToken=${{secrets.TELEGRAM_BOT_TOKEN}}
+          telegramUrl="https://api.telegram.org/bot${botToken}/sendMessage"
+          echo $chatId
+          echo $botToken
           repositoryName=${{github.repository }}
 
           author=${{github.actor }}
